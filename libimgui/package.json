@@ -12,7 +12,8 @@
     "mode"
   ],
   "dependencies": {
-    "virtual-dom": "1.0.0"
+    "virtual-dom": "1.0.0",
+    "jwerty": "0.3.2"
   },
   "author": "Tijs van der Storm (storm@cwi.nl)",
   "license": "ISC"
