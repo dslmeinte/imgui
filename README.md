@@ -24,5 +24,9 @@ cd ../examples
 browserify --debug examples.js --standalone examplesApp > bundle.js
 ```
 
+(You might have to `sudo` the first line.)
 After this you should be able to "run" `examples/index.html`.
+
+The magic `browserify` incantation for all example apps is:
+```browserify --debug <JS-file-name> --standalone <app-name> > bundle.js```
 
