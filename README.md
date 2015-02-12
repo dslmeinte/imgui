@@ -21,7 +21,7 @@ git clone https://github.com/dslmeinte/imgui.git
 cd imgui/libimgui
 npm install
 cd ../examples
-browserify examples.js -o bundle.js
+browserify --debug examples.js --standalone examplesApp > bundle.js
 ```
 
 After this you should be able to "run" `examples/index.html`.
