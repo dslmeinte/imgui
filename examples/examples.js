@@ -20,18 +20,18 @@ var model = {
 };
 
 function run() {
-    setup(examples, model, 'root');
+    imgui.setup(examples, model, 'root');
 }
 
 
 function example(title, func) {
     h3(title, "#" + func.name);
     pre(function() {
-	text(func.toString());
+		text(func.toString());	// TODO  treat regular JS whitespace in a way that looks nice
     });
     br();
     div(".output", function() {
-	func(model);
+		func(model);
     });
 }
 
@@ -60,16 +60,16 @@ function examples(model) {
     ul(function() {
 	for (var k in sections) {
 	    if (sections.hasOwnProperty(k)) {
-		li(function() {
-		    a(k, ".toc", {href: "#" + sections[k].name});
-		});
+			li(function() {
+				a(k, ".toc", {href: "#" + sections[k].name});
+			});
 	    }
 	}
     });
     for (var k in sections) {
-	if (sections.hasOwnProperty(k)) {
-	    example(k, sections[k]);
-	}
+		if (sections.hasOwnProperty(k)) {
+			example(k, sections[k]);
+		}
     }
 
 }
@@ -77,8 +77,8 @@ function examples(model) {
 function basics() {
     h4("Todos");
     ul(function() {
-	li(function() { text("Email"); });
-	li(function() { text("Reviewing"); });
+		li(function() { text("Email"); });
+		li(function() { text("Reviewing"); });
     });
 }
 
@@ -125,22 +125,22 @@ function todoApp(m) {
 
     var toolbar = component({newTodo: ""}, function toolbar(self, items, deleted) {	
 	if (button("Add")) {
-            model.items.push({label: self.newTodo, done: false});
-            self.newTodo = "";
+		model.items.push({label: self.newTodo, done: false});
+		self.newTodo = "";
 	}
 	self.newTodo = textBox(self.newTodo);
 
 	deleted = deleted.sort(function (a, b) { return a - b; });
 	if (button("Delete")) {
 	    for (var i = 0; i < deleted.length; i++) {
-		model.items.splice(deleted[i] - i, 1);
+			model.items.splice(deleted[i] - i, 1);
 	    }
 	}
     });
 
     function app(model) {
-	var deleted = showTodos(model.items);
-	toolbar(model.items, deleted);
+		var deleted = showTodos(model.items);
+		toolbar(model.items, deleted);
     }
 
     app(m);
@@ -154,16 +154,16 @@ function currentModel(m) {
 
 function viewState(m) {
     var myComponent = component({flag: false}, function myComponent(self, m) {
-	text("Model flag: ");
-	m.flag = checkBox(m.flag);
-	
-	text("View state flag: ");
-	self.flag = checkBox(self.flag);
+		text("Model flag: ");
+		m.flag = checkBox(m.flag);
+
+		text("View state flag: ");
+		self.flag = checkBox(self.flag);
     });
 
     ol(function() {
-	li(function() { myComponent(m); });
-	li(function() { myComponent(m); });
+		li(function() { myComponent(m); });
+		li(function() { myComponent(m); });
     });
 }
 
@@ -188,17 +188,17 @@ function currentViewState(m) {
 function definingButton() {
 
     function button(label) {
-	return on("button", ["click"], {}, function(ev) {
-	    text(label);
-	    return ev !== undefined;
-	});
+		return on("button", ["click"], {}, function(ev) {
+			text(label);
+			return ev !== undefined;
+		});
     }
 
     var statefulButton = component({count: 0}, function statefulButton(self, label) {
-	return on("button", ["click"], {}, function(ev) {
-	    if (ev) self.count++;
-	    text(label + ": " + self.count);
-	});
+		return on("button", ["click"], {}, function(ev) {
+			if (ev) self.count++;
+			text(label + ": " + self.count);
+		});
     });
 
     button("My button");
@@ -208,8 +208,8 @@ function definingButton() {
 
 function statelessComponents(m) {
     function enterText(s) {
-	p("Enter some text: ");
-	return textBox(s);
+		p("Enter some text: ");
+		return textBox(s);
     }
     
     m.text = enterText(m.text);
@@ -220,33 +220,33 @@ function statelessComponents(m) {
 function upwardsDataFlow() {
 
     var clickCount = component({clicks: 0}, function clickCount(self, clicked) {
-	if (clicked) {
-	    self.clicks++;
-	}
-	text("Number of clicks: " + self.clicks);
+		if (clicked) {
+			self.clicks++;
+		}
+		text("Number of clicks: " + self.clicks);
     });
 
     here(clickCount, function (f) {
-	br();
-	var clicked = button("Click me");
-	f(clicked);
+		br();
+		var clicked = button("Click me");
+		f(clicked);
     });
 }
 
 
 function selectExample(m) {
     m.gender = select(m.gender, function (option) {
-	option("Male");
-	option("Female");
-	option("Other");
+		option("Male");
+		option("Female");
+		option("Other");
     });
 }
 
 function radioExample(m) {
     m.gender = radioGroup(m.gender, function (radio) {
-	radio("Male");
-	radio("Female");
-	radio("Other");
+		radio("Male");
+		radio("Female");
+		radio("Other");
     });
 }
 
@@ -267,33 +267,33 @@ function pickersExample(m) {
 
 function editableValue(value) {
     if (value === null) {
-	text("null");
-	return null;
+		text("null");
+		return null;
     }
 
     if (value === undefined) {
-	text("undefined");
-	return;
+		text("undefined");
+		return;
     }
 
     if (value.constructor === Array) {
-	return editableList(value, editableValue);
+		return editableList(value, editableValue);
     }
 
     if (typeof value === "object") {
-	return editableObject(value, editableValue);
+		return editableObject(value, editableValue);
     }
 
     if (typeof value === "number") {
-	return parseInt(textBox(value));
+		return parseInt(textBox(value));
     }
 
     if (typeof value === "string") {
-	return textBox(value);
+		return textBox(value);
     }
 
     if (typeof value === "boolean") {
-	return checkBox(value);
+		return checkBox(value);
     }
 
     throw "Unsupported value: " + value;
@@ -303,24 +303,24 @@ function editableValue(value) {
 
 function editableObject(obj, render) {
     table(".table-bordered", function() {
-	thead(function() {
-	    tr(function () {
-		th(function () { text("Property"); });
-		th(function () { text("Value"); });		
-	    });
-	});
-	for (var k in obj) {
-	    if (obj.hasOwnProperty(k)) {
-		tr(function () {
-		    td(function() {
-			text(k + ":");
-		    });
-		    td(function() {
-			obj[k] = render(obj[k]);
-		    });
+		thead(function() {
+			tr(function () {
+				th(function () { text("Property"); });
+				th(function () { text("Value"); });
+			});
 		});
-	    }
-	}
+		for (var k in obj) {
+			if (obj.hasOwnProperty(k)) {
+				tr(function () {
+					td(function() {
+						text(k + ":");
+					});
+					td(function() {
+						obj[k] = render(obj[k]);
+					});
+				});
+			}
+		}
     });
     return obj;
 }
@@ -329,55 +329,54 @@ function editableObject(obj, render) {
 function editableList(xs, renderx, newx) {
 
     function move(idx, dir) {
-	var elt = xs[idx];
-        xs.splice(idx, 1);
-        xs.splice(idx + dir, 0, elt);
-    }
-
-    table(function () {
-        if (newx && xs.length == 0 && button(" + ")) {
-	    tr(function() {
-		td(function () {
-		    xs[0] = clone(newx);
-		});
-	    });
-        }
-	    
-	// iterate over a copy
-	var elts = xs.slice(0);
-	
-        for (var idx = 0; idx < elts.length; idx++) {
-	    tr(function() {
-		td(function () {
-                    renderx(elts[idx]);
-		});
-
-		td(function() {
-                    if (newx && button(" + ")) {
-			xs.splice(idx + 1, 0, clone(newx));
-                    }
-		});
-		
-                td(function() {
-		    if (button(" - ")) {
+		var elt = xs[idx];
 			xs.splice(idx, 1);
-                    }
-		});
+			xs.splice(idx + dir, 0, elt);
+	}
 
-		td(function() {
-                    if (idx > 0 && button(" ^ ")) {
-			move(idx, -1);
-                    }
-		});
-
-		td(function() {
-                    if (idx < xs.length - 1 && button(" v ")) {
-			move(idx, +1);
-                    }
-		});
-            });
+	table(function () {
+		if (newx && xs.length == 0 && button(" + ")) {
+			tr(function() {
+				td(function () {
+					xs[0] = clone(newx);
+				});
+			});
+		}
 	    
-        }
+		// iterate over a copy
+		var elts = xs.slice(0);
+	
+		for (var idx = 0; idx < elts.length; idx++) {
+			tr(function() {
+				td(function () {
+					renderx(elts[idx]);
+				});
+
+				td(function() {
+					if (newx && button(" + ")) {
+						xs.splice(idx + 1, 0, clone(newx));
+					}
+				});
+
+				td(function() {
+					if (button(" - ")) {
+						xs.splice(idx, 1);
+					}
+				});
+
+				td(function() {
+					if (idx > 0 && button(" ^ ")) {
+						move(idx, -1);
+					}
+				});
+
+				td(function() {
+					if (idx < xs.length - 1 && button(" v ")) {
+						move(idx, +1);
+					}
+				});
+			});
+		}
     });
 
     return xs;
@@ -388,24 +387,23 @@ var editableLabel = component({editing: false}, function editableLabel(self, _, 
     var result = txt;
 
     function setFocus(elt) {
-	elt.focus();
+		elt.focus();
     }
     
     if (self.editing) {
-	on("input", ["blur"], {type: "text", value: txt, extra: setFocus}, function (ev) {
-	    if (ev) {
-		self.editing = false;
-		result = ev.target.value;
-	    }
-	});
-    }
-    else {
-	on("span", ["dblclick"], {}, function (ev) {
-	    if (ev) {
-		self.editing = true;
-	    }
-	    text(txt);
-	});
+		on("input", ["blur"], {type: "text", value: txt, extra: setFocus}, function (ev) {
+			if (ev) {
+			self.editing = false;
+			result = ev.target.value;
+			}
+		});
+    } else {
+		on("span", ["dblclick"], {}, function (ev) {
+			if (ev) {
+			self.editing = true;
+			}
+			text(txt);
+		});
     }
 
     return result;
