@@ -9,6 +9,7 @@ var m = {
 
 function run() {
     setup(c2f, m);
+	// NOTE-MB: this only works because of browserify magic; "normally", it'd be imgui.setup(c2f, m);
 }
 
 function toF(c) {

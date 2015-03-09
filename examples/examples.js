@@ -91,36 +91,36 @@ function usingTheModel(m) {
 
 function todoApp(m) {
     var todoView = component({deleted: false}, function todoView(self, item) {
-	tr(function () {
-	    td(function () { item.done = checkBox(item.done); });
-	    td(function () { item.label = editableLabel(item, item.label); });
-	    td(function () { self.deleted = checkBox(self.deleted, {id: "myid" + item.__obj_id}); });
-	})
-	return self.deleted;
+		tr(function () {
+			td(function () { item.done = checkBox(item.done); });
+			td(function () { item.label = editableLabel(item, item.label); });
+			td(function () { self.deleted = checkBox(self.deleted, {id: "myid" + item.__obj_id}); });
+		})
+		return self.deleted;
     });
 
 
     function headerTable(headings, body) {
-	table(function() {
-	    thead(function() {
-		tr(function() {
-		    for (var i = 0; i < headings.length; i++)
-			th(function() { text(headings[i]); });
+		table(function() {
+			thead(function() {
+			tr(function() {
+				for (var i = 0; i < headings.length; i++)
+				th(function() { text(headings[i]); });
+			});
+			});
+			body();
 		});
-	    });
-	    body();
-	});
     }
 
 
     function showTodos(items) {
-	var dels = [];
-	headerTable(["Done", "Text", "Delete"], function() {
-	    for (var i = 0; i < items.length; i++) 
-		if (todoView(items[i])) 
-		    dels.push(i);
-	});
-	return dels;
+		var dels = [];
+		headerTable(["Done", "Text", "Delete"], function() {
+			for (var i = 0; i < items.length; i++)
+			if (todoView(items[i]))
+				dels.push(i);
+		});
+		return dels;
     }
 
     var toolbar = component({newTodo: ""}, function toolbar(self, items, deleted) {	
